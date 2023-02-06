@@ -32,7 +32,7 @@ const options = {
 
       function countDownDate(ms) {
         ms = selectedDates[0] - new Date();
-        if (ms === 0) {
+        if (ms <= 0) {
           clearInterval(interavlId);
         } else {
           const second = 1000;
