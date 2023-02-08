@@ -11,12 +11,16 @@ function onFormSubmit(e) {
   const delayStep = e.currentTarget.step.valueAsNumber;
   const amountOfPromise = e.currentTarget.amount.valueAsNumber;
 
-  setTimeout(() => {
-    for (let position = 1; position <= amountOfPromise; position++) {
-      createPromise(position, mainDelay);
-      mainDelay += delayStep;
-    }
-  }, mainDelay);
+  for (let position = 1; position <= amountOfPromise; position++) {
+    createPromise(position, mainDelay)
+      .then(({ position, delay }) => {
+        Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
+      })
+      .catch(({ position, delay }) => {
+        Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
+      });
+    mainDelay += delayStep;
+  }
 }
 
 function createPromise(position, delay) {
@@ -30,10 +34,5 @@ function createPromise(position, delay) {
       }
     }, delay);
   });
-  promise.then(({ position, delay }) => {
-    Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
-  });
-  promise.catch(({ position, delay }) => {
-    Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
-  });
+  return promise;
 }
