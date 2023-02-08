@@ -21,6 +21,7 @@ function onFormSubmit(e) {
       });
     mainDelay += delayStep;
   }
+  form.reset();
 }
 
 function createPromise(position, delay) {
